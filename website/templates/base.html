@@ -52,8 +52,8 @@
     {% endwith %}
     <div class="container">
         {% block content %}{% endblock %}
-        {% if current_user.is_authenticated %}
-        {{ current_user.id }}
+        {% if not current_user.is_authenticated %}
+        Not logged in
         {% endif %}
     </div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"
