@@ -1,0 +1,16 @@
+{% extends "posts_div.html" %}
+{% block title %}Submissions from {{ posts[0][2] }}{% endblock %}
+{% block header %}
+<div class="px-4 py-4">
+    ViewerBoard submissions from {{ posts[0][2] }}
+</div>
+{% endblock %}
+
+{% block login %}
+{% endblock %}
+
+{% block footer %}
+<p class="lead my-2 text-center">
+    <a href="/board/{{ board }}">Back to main board</a>
+</p>
+{% endblock %}

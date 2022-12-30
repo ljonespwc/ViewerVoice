@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Submit Question{% endblock %}
+{% block content %}
+
+<div class="px-4 py-5">
+    <h1 align="center">Submit a New Question</h1>
+</div>
+
+<div class="col-lg-8 mx-auto">
+<form method="POST">
+    <textarea name="text" id="text" class="form-control"></textarea>
+    <p class="my-5 text-center">
+        <button type="submit" class="btn btn-lg btn-primary">Let's Go!</button>
+    </p>
+</form>
+</div>
+
+<p class="lead my-4 text-center">
+    <a href="/board/{{ board }}">Back to main board</a>
+</p>
+{% endblock %}

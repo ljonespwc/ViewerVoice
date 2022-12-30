@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}ViewerBoard Home{% endblock %}
+{% block content %}
+
+<div class="px-4 py-5 text-center">
+    <h1>{% block header %}ViewerBoard Submissions{% endblock %}</h1>
+</div>
+
+<div id="posts">
+    {% for post in posts %}
+    <div class="card border-primary">
+        <div class="card-header d-flex align-items-center">
+            <div class="p-2">
+                <img src="{{ post[5] }}" style="height: 40px; width:40px; object-fit: contain"></img>
+            </div>
+            <div class="p-2">
+                {% if current_user.is_authenticated %}
+                    <a href="/posts/{{ board }}/{{ post[4] }}">{{ post[2] }}</a>
+                {% else %}
+                    {{ post[2] }}
+                {% endif %}
+            </div>
+            <div class="ms-auto p-2"></div>
+                {% set like_count = namespace(value=0) %}
+                {% set user_liked = namespace(value="far fa-thumbs-up") %}
+
+                {% for like in likes if like[2] == post[3] %}
+                    {% set like_count.value = like_count.value + 1 %}
+                {% endfor %}
+                {% set post_likes = like_count.value %}
+
+                {% if current_user.is_authenticated %}
+                    {% for like in likes if like[2] == post[3] %}
+                        {% if like[1] == current_user.id %}
+                            {% set user_liked.value = "fas fa-thumbs-up" %}
+                        {% endif %}
+                    {% endfor %}
+                    <a href=# id="like_{{ post[3] }}_{{ board }}" class="like">
+                        <span id="likes_{{ post[3] }}" class="{{ user_liked.value }}">&nbsp;{{ post_likes }}</span></a>
+                    {% else %}
+                    <div class="far fa-thumbs-up">&nbsp;{{ like_count.value}}</div>
+                {% endif %}
+
+                {% if current_user.id == post[4] or current_user.board_id == board %}
+                    <a href="/delete-post/{{ board }}/{{ post[3] }}" style="padding-left: 10px; font-size: 30px;"><i class="fa-regular fa-circle-xmark"></i></a>
+                {% endif %}
+            </div>
+        <div class="card-body">
+            <div class="card-text">
+                {{ post[0] }}
+            </div>
+            <br />
+            <div class="collapse" id="comments-{{ post[3] }}" style="padding-bottom: 10px">
+                <div class="card" style="background-color: white;">
+                    <div class="card-body" id="comments-expanded-{{ post[3] }}">
+                        {% set comment_count = namespace(value=0) %}
+                        {% for comment in comments if comment[3] == post[3] %}
+                        {% set comment_count.value = comment_count.value + 1 %}
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if comment[2] == board_owner[1] %}
+                                    <div>
+                                        <img src="{{ comment[5] }}" style="height: 40px; width:40px; object-fit: contain; padding-right: 10px"></img><mark>
+                                            <em>{{ comment[4] }}: {{ comment[0] }}</em></mark>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <img src="{{ comment[5] }}" style="height: 40px; width:40px; object-fit: contain; padding-right: 10px"></img>
+                                        {{ comment[4] }}: {{ comment[0] }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <small class="text-muted">
+                                        {{ comment[1] }}
+                                    </small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <p class="card-text">
+                {% if comment_count.value > 0 %}
+                    <a data-bs-toggle="collapse" href="#comments-{{ post[3] }}" role="button">
+                        <small>View {{ comment_count.value }} Comments</small>
+                    </a>
+                {% else %}
+                    <small class="text-muted">No Comments</small>
+                {% endif %}
+            </p>
+            <form class="input-group" method="POST" action="/create-comment/{{ board }}/{{ post[3] }}">
+                <input type="text" id="text" name="text" class="form-control"
+                    placeholder="Leave a comment about this submission.">
+                {% if current_user.is_authenticated %}
+                <button type="submit" class="btn btn-primary">Add</button>
+                {% else %}
+                <button type="submit" class="btn btn-secondary" disabled>Add</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            Submitted: {{ post[1] }}
+        </div>
+    </div><br />
+    {% endfor %}
+</div>
+{% block login %}
+    <div align="center">
+        {% if current_user.is_authenticated and board %}
+        <a href="/create-post/{{ board }}"><button type="button" class="btn btn-primary btn-lg mb-5">Submit New Question or Idea</button></a>
+        {% else %}
+        <button type="button" class="btn btn-secondary btn-lg mb-5" disabled>Submit New Question or Idea</button>
+        {% endif %}
+    </div>
+    {% if not current_user.is_authenticated %}
+    <div align="center">
+        To add, comment on, and like a submission:<br />
+        <a class="button" href="/login?board={{ board }}">
+            <img src="/static/images/btn_google_signin_dark_normal_web@2x.png" style="height: 30%; width:30%; object-fit: contain" class="mt-2 mb-2">
+        </a>
+    </div>
+    {% endif %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% endblock %}
