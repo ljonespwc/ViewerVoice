@@ -131,7 +131,7 @@ def posts(board, author):
     db.execute(
         '''SELECT id, author, post_id FROM likes WHERE board_id = %s''', (board,))
     likes = db.fetchall()
-    return render_template("posts.html", posts=posts, comments=comments, likes=likes, board=board)
+    return render_template("posts.html", posts=posts, comments=comments, likes=likes, board=board, board_owner=author_exists)
 
 
 @views.route("/create-comment/<board>/<post_id>", methods=['POST'])

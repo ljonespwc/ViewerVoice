@@ -65,11 +65,11 @@
 <div class="px-4 my-5 text-center">
     {% if board_id %}
         <p class="lead my-4">
-            Here's your link to share: <a href="/board/{{ board_id }}">https://www.viewervoice.io/board/{{ board_id }}</a>
+            Here's your ViewerVoice link to share: <a href="/board/{{ board_id }}">https://www.viewervoice.io/board/{{ board_id }}</a>
         </p>
     {% endif %}
     {% if not current_user.is_authenticated %}
-        <p class="lead mb-2">To get your own ViewerBoard, first:</p>
+        <p class="lead mb-2">To get your own ViewerVoice, first:</p>
         <a class="button" href="/login?board={{ board }}"><img src="/static/images/btn_google_signin_dark_normal_web@2x.png"
                 width="382" height="92"></a>
     {% else %}
