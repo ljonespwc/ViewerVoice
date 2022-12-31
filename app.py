@@ -16,6 +16,7 @@ from website import create_app
 
 # Flask app setup
 app = create_app()
+app.secret_key = 'backtothefuture'
 
 # User session management setup
 login_manager = LoginManager()
