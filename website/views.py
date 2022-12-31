@@ -51,7 +51,7 @@ def show_board(board):
     db = get_db()
     # check to see if board exists
     db.execute(
-        '''SELECT board_id, id FROM users WHERE board_id = %s''', (board,))
+        '''SELECT board_id, id, name FROM users WHERE board_id = %s''', (board,))
     board_exists = db.fetchone()
     if not board_exists:
         flash('Sorry, there\'s no such board. Try again.',
